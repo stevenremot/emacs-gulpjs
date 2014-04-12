@@ -107,7 +107,8 @@ Return nil of no gulp file has been found."
 
 EVENT is the proces' status change."
   (when (string-match-p "exited abnormally" event)
-    (message (propertize "Gulp process stopped unexpectedly" 'face 'error))))
+    (message (propertize "Gulp process stopped unexpectedly" 'face 'error))
+    (switch-to-buffer-other-window (gulpjs-open-buffer))))
 
 (defun gulpjs-create-process-for-task (file-name task)
   "Launch the gulp process in FILE-NAME for TASK."
@@ -131,9 +132,11 @@ EVENT is the proces' status change."
 TASK is a string specifying the task to start."
   (interactive)
   (let ((task (read-string "Enter a gulp task : "))
-        (file-name (buffer-file-name)))
-    (with-current-buffer (gulpjs-open-buffer)
-      (gulpjs-create-process-for-task file-name task))))
+        (file-name (buffer-file-name))
+        (buffer (gulpjs-open-buffer)))
+    (with-current-buffer buffer
+      (gulpjs-create-process-for-task file-name task))
+    (switch-to-buffer-other-window buffer)))
 
 (defun gulpjs-restart-task ()
   "Restart the gulp task run in the current buffer."

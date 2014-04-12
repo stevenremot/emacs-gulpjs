@@ -22,7 +22,7 @@ Then, you can either require the whole file in your *init.el*:
 Or just put an autoload for the main entry point:
 
 ```elisp
-(autoload 'gulpjs-start-task "gulpjs" "STart a gulp task." t)
+(autoload 'gulpjs-start-task "gulpjs" "Start a gulp task." t)
 ```
 
 ##Usage##
@@ -39,7 +39,7 @@ buffer, or using `M-x gulpjs-restart-task`.
 
 This package is a tiny code that I wrote to fit my specific and very
 basic use of gulp. If you think some useful functionality could be
-added, feel free to open an issue so we can talk about it.
+added, feel free to [open an issue](https://github.com/stevenremot/emacs-gulpjs/issues) so we can talk about it.
 
 ##License##
 

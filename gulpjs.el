@@ -58,6 +58,8 @@
 ;; This code is released under the GPL v3. See *COPYING* for more
 ;; details.
 
+(require 'ido)
+
 ;;; Code:
 (defgroup gulpjs
   '()
@@ -108,8 +110,8 @@ EVENT is the proces' status change."
 (defun gulpjs-create-process-for-task (file-name task)
   "Launch the gulp process in FILE-NAME for TASK."
   (setq default-directory (gulpjs-get-root (if (file-directory-p file-name)
-                                             file-name
-                                           (file-name-directory file-name)))
+                                               file-name
+                                             (file-name-directory file-name)))
         gulpjs-task task
         gulpjs-directory default-directory)
   (if default-directory
@@ -120,13 +122,21 @@ EVENT is the proces' status change."
     (error "Cannot find gulp file")
     (kill-buffer)))
 
+(defun gulpjs-list-all-gulp-tasks ()
+  "List all the gulp taks in simple format."
+  (split-string
+   (shell-command-to-string
+    "gulp --tasks-simple")
+   "\n"
+   t))
+
 ;;;###autoload
 (defun gulpjs-start-task ()
   "Start a gulp task in a specified buffer.
 
 TASK is a string specifying the task to start."
   (interactive)
-  (let ((task (read-string "Enter a gulp task : "))
+  (let ((task (ido-completing-read "Enter a gulp task : " (gulpjs-list-all-gulp-tasks)))
         (file-name (buffer-file-name))
         (buffer (gulpjs-open-buffer)))
     (with-current-buffer buffer

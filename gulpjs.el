@@ -91,12 +91,7 @@
 Start to look in DIRECTORY.
 
 Return nil of no gulp file has been found."
-  (when (file-directory-p directory)
-    (if (member gulpjs-file-name (directory-files directory))
-        (file-name-as-directory directory)
-      (let ((parent (file-name-directory (directory-file-name directory))))
-        (when (not (string-equal directory parent))
-          (gulpjs-get-root parent))))))
+  (locate-dominating-file directory gulpjs-file-name))
 
 (defun gulpjs-open-buffer ()
   "Open a buffer for gulpjs output."
